@@ -1380,6 +1380,7 @@ def get_lesson(course: str, chapter: int, lesson: int) -> dict:
 			"instructor_notes",
 			"course",
 			"content",
+			"custom_dsa_problem",
 			"instructor_content",
 		],
 		as_dict=1,

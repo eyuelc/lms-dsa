@@ -50,7 +50,7 @@
 			</Button>
 		</div>
 
-		<div class="grid md:grid-cols-[70%,30%] sm:h-[94vh]">
+		<div class="grid md:grid-cols-[85%,15%] sm:h-[94vh]">
 			<div v-if="lesson.data.no_preview" class="sm:border-e">
 				<div class="shadow rounded-md w-3/4 mt-10 mx-auto text-center p-4">
 					<div class="flex items-center justify-center mt-4 gap-x-2">
@@ -108,9 +108,76 @@
 							class="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center justify-between"
 						>
 							<div class="flex flex-col">
-								<h1 class="text-4xl-semibold text-ink-gray-9">
-									{{ lesson.data.title }}
-								</h1>
+								
+								
+								
+									
+								<div
+									v-if="dsaProblem.data"
+									class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2"
+								>
+									<!-- LEFT: Problem -->
+									<div class="min-w-0">
+
+										<div>
+											<h2 class="text-2xl font-semibold">
+												{{ dsaProblem.data.title }}
+											</h2>
+
+											<span
+												class="mt-2 inline-block rounded-md bg-surface-gray-2 px-2 py-1 text-xs font-medium"
+											>
+												{{ dsaProblem.data.difficulty }}
+											</span>
+										</div>
+
+										<div class="mt-6">
+											<h3 class="mb-2 text-lg font-semibold">Description</h3>
+
+											<div
+												class="prose prose-sm max-w-none"
+												v-html="dsaProblem.data.description"
+											></div>
+										</div>
+
+										<div class="mt-6">
+											<h3 class="mb-2 text-lg font-semibold">Examples</h3>
+
+											<div
+												class="prose prose-sm max-w-none"
+												v-html="dsaProblem.data.examples"
+											></div>
+										</div>
+
+										<div class="mt-6">
+											<h3 class="mb-2 text-lg font-semibold">Constraints</h3>
+
+											<div
+												class="prose prose-sm max-w-none"
+												v-html="dsaProblem.data.constraints"
+											></div>
+										</div>
+
+									</div>
+
+									<!-- RIGHT: Monaco -->
+									<div class="min-w-0 h-full flex flex-col">
+										<div class="mb-3 flex items-center justify-between">
+											<h3 class="text-lg font-semibold">Your Solution</h3>
+
+											<span class="text-sm text-ink-gray-5">
+												C++
+											</span>
+										</div>
+
+										<div class="flex-1 min-h-0">
+											<MonacoEditor
+												v-model="code"
+												language="cpp"
+											/>
+										</div>
+									</div>
+								</div>
 
 								<div
 									v-if="zenModeEnabled"
@@ -141,29 +208,7 @@
 										</template>
 									</Button>
 								</Tooltip>
-								<Button v-if="lesson.data.prev" @click="switchLesson('prev')">
-									<template #prefix>
-										<span class="lucide-chevron-left size-4" />
-									</template>
-									<span>{{ __('Previous') }}</span>
-								</Button>
-								<Button v-if="lesson.data.next" @click="switchLesson('next')">
-									<template #suffix>
-										<span class="lucide-chevron-right size-4" />
-									</template>
-									<span>{{ __('Next') }}</span>
-								</Button>
-								<router-link
-									v-else
-									:to="{
-										name: 'CourseDetail',
-										params: { courseName: courseName },
-									}"
-								>
-									<Button class="text-p-base-medium">{{
-										__('Back to Course')
-									}}</Button>
-								</router-link>
+								
 							</div>
 
 							<div
@@ -353,6 +398,7 @@
 	/>
 </template>
 <script setup>
+console.log("🔥 LESSON.VUE IS RUNNING 🔥")
 import {
 	Badge,
 	Button,
@@ -392,6 +438,7 @@ import {
 } from '@/utils/lessonProgress'
 import EditorJS from '@editorjs/editorjs'
 import LessonContent from '@/components/LessonContent.vue'
+import MonacoEditor from '@/components/MonacoEditor.vue'
 import CourseInstructors from '@/components/CourseInstructors.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import Discussions from '@/components/Discussions.vue'
@@ -506,6 +553,38 @@ const lesson = createResource({
 	},
 	auto: true,
 })
+
+
+const dsaProblem = createResource({
+	url: 'frappe.client.get',
+	makeParams() {
+		return {
+			doctype: 'DSAProblem',
+			name: lesson.data?.custom_dsa_problem,
+		}
+	},
+	auto: false,
+})
+
+watch(
+	() => lesson.data?.custom_dsa_problem,
+	(problemName) => {
+		if (problemName) {
+			dsaProblem.reload()
+		}
+	},
+	{ immediate: true }
+)
+
+const code = ref(`#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+    // Write your solution here
+
+    return 0;
+}`)
 
 const setupLesson = (data) => {
 	if (Object.keys(data).length === 0) {

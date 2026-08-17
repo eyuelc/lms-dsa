@@ -101,6 +101,7 @@ declare module 'vue' {
     Members: typeof import('./src/components/Settings/Members.vue')['default']
     MobileLayout: typeof import('./src/components/Layouts/MobileLayout.vue')['default']
     MobilePageLayout: typeof import('./src/components/Layouts/MobilePageLayout.vue')['default']
+    MonacoEditor: typeof import('./src/components/MonacoEditor.vue')['default']
     MultiLink: typeof import('./src/components/Controls/MultiLink.vue')['default']
     MultiSelect: typeof import('./src/components/Controls/MultiSelect.vue')['default']
     NewMemberModal: typeof import('./src/components/Modals/NewMemberModal.vue')['default']

@@ -31,6 +31,7 @@
 		"lucide-static": "1.17.0",
 		"lucide-vue-next": "0.383.0",
 		"markdown-it": "14.0.0",
+		"monaco-editor": "^0.56.0",
 		"pdfjs-dist": "4.10.38",
 		"pinia": "2.0.33",
 		"plyr": "3.7.8",
