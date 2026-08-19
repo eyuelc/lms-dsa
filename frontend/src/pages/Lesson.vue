@@ -114,67 +114,110 @@
 									
 								<div
 									v-if="dsaProblem.data"
-									class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2"
+									class="mt-6 h-[calc(100vh-140px)] overflow-hidden rounded-lg bg-[#1a1a1a] text-white"
 								>
-									<!-- LEFT: Problem -->
-									<div class="min-w-0">
+									<!-- TOP TOOLBAR -->
+									<div
+										class="flex h-14 items-center justify-end gap-2 border-b border-[#333] bg-[#1f1f1f] px-4"
+									>
+										<Button
+											variant="subtle"
+											class="!bg-[#2d6a4f] !text-white hover:!bg-[#347a5b]"
+											@click="runCode"
+										>
+											<template #prefix>
+												<span class="lucide-play size-4" />
+											</template>
+											{{ __('Run') }}
+										</Button>
 
-										<div>
-											<h2 class="text-2xl font-semibold">
-												{{ dsaProblem.data.title }}
-											</h2>
-
-											<span
-												class="mt-2 inline-block rounded-md bg-surface-gray-2 px-2 py-1 text-xs font-medium"
-											>
-												{{ dsaProblem.data.difficulty }}
-											</span>
-										</div>
-
-										<div class="mt-6">
-											<h3 class="mb-2 text-lg font-semibold">Description</h3>
-
-											<div
-												class="prose prose-sm max-w-none"
-												v-html="dsaProblem.data.description"
-											></div>
-										</div>
-
-										<div class="mt-6">
-											<h3 class="mb-2 text-lg font-semibold">Examples</h3>
-
-											<div
-												class="prose prose-sm max-w-none"
-												v-html="dsaProblem.data.examples"
-											></div>
-										</div>
-
-										<div class="mt-6">
-											<h3 class="mb-2 text-lg font-semibold">Constraints</h3>
-
-											<div
-												class="prose prose-sm max-w-none"
-												v-html="dsaProblem.data.constraints"
-											></div>
-										</div>
-
+										<Button
+											variant="solid"
+											class="!bg-[#16a34a] !text-white hover:!bg-[#15803d]"
+											@click="submitCode"
+										>
+											<template #prefix>
+												<span class="lucide-check size-4" />
+											</template>
+											{{ __('Submit') }}
+										</Button>
 									</div>
 
-									<!-- RIGHT: Monaco -->
-									<div class="min-w-0 h-full flex flex-col">
-										<div class="mb-3 flex items-center justify-between">
-											<h3 class="text-lg font-semibold">Your Solution</h3>
+									<!-- PROBLEM + EDITOR -->
+									<div class="grid h-[calc(100%-3.5rem)] grid-cols-1 lg:grid-cols-2">
+										
+										<!-- LEFT: Problem -->
+										<div
+											class="min-w-0 overflow-y-auto border-e border-[#333] px-6 py-6"
+										>
+											<div>
+												<h2 class="text-2xl font-semibold text-white">
+													{{ dsaProblem.data.title }}
+												</h2>
 
-											<span class="text-sm text-ink-gray-5">
-												C++
-											</span>
+												<span
+													class="mt-3 inline-block rounded-md bg-[#2d6a4f] px-2.5 py-1 text-xs font-medium text-white"
+												>
+													{{ dsaProblem.data.difficulty }}
+												</span>
+											</div>
+
+											<div class="mt-8">
+												<h3 class="mb-3 text-lg font-semibold text-white">
+													Description
+												</h3>
+
+												<div
+													class="prose prose-sm prose-invert max-w-none"
+													v-html="dsaProblem.data.description"
+												></div>
+											</div>
+
+											<div class="mt-8">
+												<h3 class="mb-3 text-lg font-semibold text-white">
+													Examples
+												</h3>
+
+												<div
+													class="prose prose-sm prose-invert max-w-none"
+													v-html="dsaProblem.data.examples"
+												></div>
+											</div>
+
+											<div class="mt-8">
+												<h3 class="mb-3 text-lg font-semibold text-white">
+													Constraints
+												</h3>
+
+												<div
+													class="prose prose-sm prose-invert max-w-none"
+													v-html="dsaProblem.data.constraints"
+												></div>
+											</div>
 										</div>
 
-										<div class="flex-1 min-h-0">
-											<MonacoEditor
-												v-model="code"
-												language="cpp"
-											/>
+										<!-- RIGHT: Monaco -->
+										<div class="min-w-0 h-full flex flex-col bg-[#1a1a1a]">
+											<div
+												class="flex items-center justify-between border-b border-[#333] px-5 py-3"
+											>
+												<h3 class="text-sm font-semibold text-white">
+													Your Solution
+												</h3>
+
+												<span
+													class="rounded-md bg-[#2a2a2a] px-2 py-1 text-xs text-gray-300"
+												>
+													C++
+												</span>
+											</div>
+
+											<div class="flex-1 min-h-0 overflow-hidden">
+												<MonacoEditor
+													v-model="code"
+													language="cpp"
+												/>
+											</div>
 										</div>
 									</div>
 								</div>
