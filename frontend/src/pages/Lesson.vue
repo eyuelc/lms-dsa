@@ -116,7 +116,7 @@
 									v-if="dsaProblem.data"
 									class="mt-6 h-[calc(100vh-140px)] overflow-hidden rounded-lg bg-[#1a1a1a] text-white"
 								>
-									<!-- TOP TOOLBAR -->
+
 									<div
 										class="flex h-14 items-center justify-end gap-2 border-b border-[#333] bg-[#1f1f1f] px-4"
 									>
@@ -143,10 +143,8 @@
 										</Button>
 									</div>
 
-									<!-- PROBLEM + EDITOR -->
 									<div class="grid h-[calc(100%-3.5rem)] grid-cols-1 lg:grid-cols-2">
 										
-										<!-- LEFT: Problem -->
 										<div
 											class="min-w-0 overflow-y-auto border-e border-[#333] px-6 py-6"
 										>
@@ -196,7 +194,6 @@
 											</div>
 										</div>
 
-										<!-- RIGHT: Monaco -->
 										<div class="min-w-0 h-full flex flex-col bg-[#1a1a1a]">
 											<div
 												class="flex items-center justify-between border-b border-[#333] px-5 py-3"
