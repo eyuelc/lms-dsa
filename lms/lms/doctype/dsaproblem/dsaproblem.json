@@ -7,11 +7,15 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_pyka",
+  "starter_code",
   "title",
   "description",
   "difficulty",
   "examples",
-  "constraints"
+  "constraints",
+  "custom_starter_code",
+  "custom_wrapper_code",
+  "test_cases"
  ],
  "fields": [
   {
@@ -43,12 +47,32 @@
    "fieldname": "constraints",
    "fieldtype": "Text Editor",
    "label": "constraints"
+  },
+  {
+   "fieldname": "starter_code",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "custom_starter_code",
+   "fieldtype": "Code",
+   "label": "StarterCode"
+  },
+  {
+   "fieldname": "custom_wrapper_code",
+   "fieldtype": "Code",
+   "label": "WrapperCode"
+  },
+  {
+   "fieldname": "test_cases",
+   "fieldtype": "Table",
+   "label": "TestCases",
+   "options": "TestCase"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-08-15 13:57:13.078111",
+ "modified": "2026-08-22 12:25:50.360952",
  "modified_by": "Administrator",
  "module": "LMS",
  "name": "DSAProblem",

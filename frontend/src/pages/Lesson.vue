@@ -195,8 +195,10 @@
 										</div>
 
 										<div class="min-w-0 h-full flex flex-col bg-[#1a1a1a]">
+
+											
 											<div
-												class="flex items-center justify-between border-b border-[#333] px-5 py-3"
+												class="flex h-12 shrink-0 items-center justify-between border-b border-[#333] px-5"
 											>
 												<h3 class="text-sm font-semibold text-white">
 													Your Solution
@@ -209,12 +211,61 @@
 												</span>
 											</div>
 
+											
 											<div class="flex-1 min-h-0 overflow-hidden">
 												<MonacoEditor
 													v-model="code"
 													language="cpp"
 												/>
 											</div>
+
+											
+											<div
+												v-if="isTerminalOpen"
+												class="h-1/4 min-h-[140px] shrink-0 border-t border-[#333] bg-[#0d0d0d] text-sm text-gray-200"
+											>
+
+												<!-- Terminal Header -->
+												<div
+													class="flex h-9 items-center justify-between border-b border-[#292929] bg-[#151515] px-4"
+												>
+													<div class="flex items-center gap-2">
+														<span class="lucide-terminal size-4 text-gray-400"></span>
+
+														<span class="text-xs font-medium text-gray-300">
+															Terminal
+														</span>
+													</div>
+
+													<Button
+														variant="ghost"
+														class="!h-7 !px-2 !text-xs !text-gray-400 hover:!text-white"
+														@click="terminalOutput = ''"
+													>
+														Clear
+													</Button>
+												</div>
+
+												
+												<div
+													class="h-[calc(100%-2.25rem)] overflow-y-auto px-4 py-3 font-mono"
+												>
+													<div v-if="isRunning" class="text-gray-400">
+														Running...
+													</div>
+
+													<pre
+														v-else-if="terminalOutput"
+														class="whitespace-pre-wrap break-words"
+													>{{ terminalOutput }}</pre>
+
+													<div v-else class="text-gray-600">
+														Output will appear here...
+													</div>
+												</div>
+
+											</div>
+
 										</div>
 									</div>
 								</div>
@@ -438,7 +489,10 @@
 	/>
 </template>
 <script setup>
-console.log("🔥 LESSON.VUE IS RUNNING 🔥")
+const terminalOutput = ref('')
+const terminalInput = ref('')
+const isRunning = ref(false)
+const isTerminalOpen = ref(false)
 import {
 	Badge,
 	Button,
@@ -544,6 +598,82 @@ const props = defineProps({
 	},
 })
 
+const runCode = async () => {
+    isTerminalOpen.value = true
+    isRunning.value = true
+    terminalOutput.value = ''
+
+    try {
+        const response = await fetch(
+            '/api/method/lms.lms.api.dsa.run_code',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    problem: dsaProblem.data.name,
+                    code: code.value,
+                    stdin: terminalInput.value,
+                }),
+            }
+        )
+
+        if (!response.ok) {
+            throw new Error(`Backend returned ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        const submission = data.message
+
+        const result = await pollSubmission(submission.token)
+
+        if (result.stdout) {
+            terminalOutput.value = result.stdout
+        }
+
+        if (result.stderr) {
+            terminalOutput.value += `\n${result.stderr}`
+        }
+
+        if (result.compile_output) {
+            terminalOutput.value += `\n${result.compile_output}`
+        }
+
+        if (
+            !result.stdout &&
+            !result.stderr &&
+            !result.compile_output
+        ) {
+            terminalOutput.value =
+                result.message ||
+                result.status?.description ||
+                'No output'
+        }
+    } catch (error) {
+        terminalOutput.value = error.message
+    } finally {
+        isRunning.value = false
+    }
+}
+
+const pollSubmission = async (token) => {
+    while (true) {
+        const response = await fetch(
+            `https://ce.judge0.com/submissions/${token}?base64_encoded=false`
+        )
+
+        const result = await response.json()
+
+        if (result.status.id > 2) {
+            return result
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+}
+
 let collapsedByLesson = false
 const isCourseAdmin = () =>
 	Boolean(user.data?.is_moderator || user.data?.is_instructor)
@@ -616,15 +746,25 @@ watch(
 	{ immediate: true }
 )
 
-const code = ref(`#include <iostream>
-#include <vector>
-using namespace std;
+const code = ref('')
+const loadedProblem = ref(null)
 
-int main() {
-    // Write your solution here
+watch(
+    () => dsaProblem.data,
+    (problem) => {
+        if (!problem?.custom_starter_code) {
+            return
+        }
 
-    return 0;
-}`)
+        if (loadedProblem.value === problem.name) {
+            return
+        }
+
+        code.value = problem.custom_starter_code
+        loadedProblem.value = problem.name
+    },
+    { immediate: true }
+)
 
 const setupLesson = (data) => {
 	if (Object.keys(data).length === 0) {
