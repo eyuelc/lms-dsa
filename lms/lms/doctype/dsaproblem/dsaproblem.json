@@ -15,7 +15,10 @@
   "constraints",
   "custom_starter_code",
   "custom_wrapper_code",
-  "test_cases"
+  "test_case_1_input",
+  "test_case_1_output",
+  "test_case_2_input",
+  "test_case_2_output"
  ],
  "fields": [
   {
@@ -63,16 +66,30 @@
    "label": "WrapperCode"
   },
   {
-   "fieldname": "test_cases",
-   "fieldtype": "Table",
-   "label": "TestCases",
-   "options": "TestCase"
+   "fieldname": "test_case_1_input",
+   "fieldtype": "Long Text",
+   "label": "test case 1 input"
+  },
+  {
+   "fieldname": "test_case_1_output",
+   "fieldtype": "Long Text",
+   "label": "test case 1 output"
+  },
+  {
+   "fieldname": "test_case_2_input",
+   "fieldtype": "Long Text",
+   "label": "test case 2 input"
+  },
+  {
+   "fieldname": "test_case_2_output",
+   "fieldtype": "Long Text",
+   "label": "test case 2 output"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-08-22 12:25:50.360952",
+ "modified": "2026-08-25 14:38:04.304590",
  "modified_by": "Administrator",
  "module": "LMS",
  "name": "DSAProblem",

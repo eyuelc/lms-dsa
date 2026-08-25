@@ -98,23 +98,23 @@
 				}"
 			>
 				<div
-					class="sm:border-e pt-8 sm:pt-5 pb-10 h-full"
+					class="sm:border-e pt-8 sm:pt-5 pb-10 h-full min-w-0 w-full"
 					:class="{
 						'w-full md:w-3/5 mx-auto border-none !pt-10': zenModeEnabled,
 					}"
 				>
-					<div class="px-5">
+					<div class="px-5 min-w-0 w-full">
 						<div
-							class="flex flex-col space-y-3 md:space-y-0 md:flex-row md:items-center justify-between"
+							class="flex min-w-0 w-full flex-col space-y-3 md:space-y-0 md:flex-row md:items-center justify-between"
 						>
-							<div class="flex flex-col">
+							<div class="flex min-w-0 w-full flex-col">
 								
 								
 								
 									
 								<div
 									v-if="dsaProblem.data"
-									class="mt-6 h-[calc(100vh-140px)] overflow-hidden rounded-lg bg-[#1a1a1a] text-white"
+									class="mt-6 h-[calc(100vh-140px)] w-full overflow-hidden rounded-lg bg-[#1a1a1a] text-white"
 								>
 
 									<div
@@ -143,7 +143,7 @@
 										</Button>
 									</div>
 
-									<div class="grid h-[calc(100%-3.5rem)] grid-cols-1 lg:grid-cols-2">
+									<div class="grid h-[calc(100%-3.5rem)] min-w-0 w-full grid-cols-2">
 										
 										<div
 											class="min-w-0 overflow-y-auto border-e border-[#333] px-6 py-6"
